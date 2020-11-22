@@ -49,7 +49,10 @@ public class P20ValidParentheses {
         Solution solution = new P20ValidParentheses().new Solution();
         // TO TEST
 
-        boolean valid = solution.isValid("([])");
+//        boolean valid = solution.isValid("[{}[]]");
+        boolean valid = solution.isValid("({{{{}}}))");
+//        boolean valid = solution.isValid("(){}}{");
+
 
         System.out.println("valid = " + valid);
     }
@@ -77,18 +80,19 @@ public class P20ValidParentheses {
 
             boolean flag = true;
 
+            first:
             while (currentIndex < length) {
 
                 char startChar = chars[currentIndex];
 
                 //如果是括号的开头，则从后往前找直到遇到自己
-                if (startChar == '(' || startChar == '[' || startChar == '{'){
+                if (startChar == '(' || startChar == '[' || startChar == '{') {
 
                     int startIndex = currentIndex;
 
                     int endIndex = length;
 
-                    while (startIndex < endIndex){
+                    while (startIndex < endIndex) {
 
                         //求余，余数相等的为false
                         int start = startIndex % 2;
@@ -114,24 +118,31 @@ public class P20ValidParentheses {
                                 break;
                         }
 
+                        //如果找到一个匹配的就跳出这次的循环
                         if (flag) {
-                            startIndex++;
-                            length = chars.length - 1;
-                        } else if (((length - 1) == currentIndex) && flag == false) {
-                            break;
-                        } else {
-                            length--;
+                            currentIndex++;
+                            if (endIndex == length)
+                                length--;
+                            continue first;
+                        }
+                        //如果从后往前找直到遇到自己都找不到，直接返回false，因为有一个找不到匹配就是不符合的
+                        else if (((length - 1) == startIndex) && flag == false) {
+                            break first;
+                        }
+                        //如果没匹配到就再往前找
+                        else {
+                            endIndex--;
                         }
                     }
                 }
                 //如果是括号的结尾，则从前完后找直到遇到自己
-                else if (startChar == ')' || startChar == ']' || startChar == '}'){
+                else if (startChar == ')' || startChar == ']' || startChar == '}') {
 
                     int startIndex = 0;
 
                     int endIndex = currentIndex;
 
-                    while (startIndex < endIndex){
+                    while (startIndex < endIndex) {
 
                         //求余，余数相等的为false
                         int start = startIndex % 2;
@@ -139,11 +150,11 @@ public class P20ValidParentheses {
                         int end = endIndex % 2;
 
                         if (start == end) {
-                            endIndex--;
+                            startIndex++;
                             continue;
                         }
 
-                        char endChar = chars[endIndex];
+                        char endChar = chars[startIndex];
 
                         switch (startChar) {
                             case ')':
@@ -156,19 +167,30 @@ public class P20ValidParentheses {
                                 flag = endChar == '{';
                                 break;
                         }
+
+                        //如果找到一个匹配的就跳出这次的循环
+                        if (flag) {
+                            currentIndex++;
+                            continue first;
+                        }
+                        //如果从前往后直到遇到自己都找不到，直接返回false，因为有一个找不到匹配就是不符合的
+                        else if (((length - 1) == startIndex) && flag == false) {
+                            break first;
+                        }
+                        //如果没匹配到就再往后找
+                        else {
+                            startIndex++;
+                        }
                     }
                 }
 
-
-                if (flag) {
-                    currentIndex++;
-                    length = chars.length - 1;
-                } else if (((length - 1) == currentIndex) && flag == false) {
+                //如果匹配完都没有找到合适的，直接跳出
+                if ((length == currentIndex) && flag == false) {
                     break;
-                } else {
-                    length--;
                 }
 
+                //如果匹配完flag还是true，说明目前都是可以匹配到的，继续往下匹配
+                currentIndex++;
             }
 
             return flag;
