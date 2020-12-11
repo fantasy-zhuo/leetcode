@@ -27,6 +27,9 @@
 
 package com.fantasy.code.leetcode.editor.cn;
 
+import com.fantasy.code.leetcode.editor.cn.annotation.Resolved;
+
+@Resolved
 //Java：整数反转
 public class P7ReverseInteger {
     public static void main(String[] args) {

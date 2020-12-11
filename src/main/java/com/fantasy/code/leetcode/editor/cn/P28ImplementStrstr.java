@@ -25,6 +25,10 @@
 
 
 package com.fantasy.code.leetcode.editor.cn;
+
+import com.fantasy.code.leetcode.editor.cn.annotation.Resolved;
+
+@Resolved
 //Java：实现 strStr()
 public class P28ImplementStrstr{
     public static void main(String[] args) {

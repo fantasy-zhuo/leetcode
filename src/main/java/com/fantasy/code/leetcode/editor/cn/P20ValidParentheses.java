@@ -43,6 +43,7 @@
 
 package com.fantasy.code.leetcode.editor.cn;
 
+import com.fantasy.code.leetcode.editor.cn.annotation.Resolved;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
+@Resolved
 //Java：有效的括号
 public class P20ValidParentheses {
     public static void main(String[] args) {
