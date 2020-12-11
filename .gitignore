@@ -35,3 +35,5 @@ build/
 /mvnw.cmd
 /.mvn
 !/src/main/java/com/fantasy/code/leetcode/editor/cn/all.json
+/src/main/java/com/fantasy/code/leetcode/editor/cn/all.json
+/src/main/java/com/fantasy/code/leetcode/editor/cn/translation.json

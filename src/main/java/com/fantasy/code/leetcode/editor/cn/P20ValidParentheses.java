@@ -43,6 +43,13 @@
 
 package com.fantasy.code.leetcode.editor.cn;
 
+import org.springframework.util.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
+
 //Java：有效的括号
 public class P20ValidParentheses {
     public static void main(String[] args) {
@@ -50,8 +57,8 @@ public class P20ValidParentheses {
         // TO TEST
 
 //        boolean valid = solution.isValid("[{}[]]");
-        boolean valid = solution.isValid("({{{{}}}))");
-//        boolean valid = solution.isValid("(){}}{");
+//        boolean valid = solution.isValid("({{{{}}}))");
+        boolean valid = solution.isValid("[{}[]]");
 
 
         System.out.println("valid = " + valid);
@@ -60,6 +67,12 @@ public class P20ValidParentheses {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public boolean isValid(String s) {
+
+            /**
+             * 替换字符
+             * 若当前字符与上一字符匹配上后,用''代替
+             * 最后字符串为''即为有效扩考
+             */
 
             //null直接返回false
             if (s == null || (s != "" && s.length() % 2 != 0))
@@ -74,127 +87,107 @@ public class P20ValidParentheses {
 
             char[] chars = s.toCharArray();
 
-            int currentIndex = 0;
+            List<Character> list = new ArrayList<>();
 
-            int length = chars.length - 1;
+            for (int i = 0; i < chars.length; i++) {
+                if (i == 0)
+                    continue;
 
-            boolean flag = true;
+                //当前字符
+                char c = chars[i];
 
-            first:
-            while (currentIndex < length) {
+                //上一字符
+                int index = i - 1;
 
-                char startChar = chars[currentIndex];
-
-                //如果是括号的开头，则从后往前找直到遇到自己
-                if (startChar == '(' || startChar == '[' || startChar == '{') {
-
-                    int startIndex = currentIndex;
-
-                    int endIndex = length;
-
-                    while (startIndex < endIndex) {
-
-                        //求余，余数相等的为false
-                        int start = startIndex % 2;
-
-                        int end = endIndex % 2;
-
-                        if (start == end) {
-                            endIndex--;
-                            continue;
-                        }
-
-                        char endChar = chars[endIndex];
-
-                        switch (startChar) {
-                            case '(':
-                                flag = endChar == ')';
-                                break;
-                            case '[':
-                                flag = endChar == ']';
-                                break;
-                            case '{':
-                                flag = endChar == '}';
-                                break;
-                        }
-
-                        //如果找到一个匹配的就跳出这次的循环
-                        if (flag) {
-                            currentIndex++;
-                            if (endIndex == length)
-                                length--;
-                            continue first;
-                        }
-                        //如果从后往前找直到遇到自己都找不到，直接返回false，因为有一个找不到匹配就是不符合的
-                        else if (((length - 1) == startIndex) && flag == false) {
-                            break first;
-                        }
-                        //如果没匹配到就再往前找
-                        else {
-                            endIndex--;
-                        }
-                    }
-                }
-                //如果是括号的结尾，则从前完后找直到遇到自己
-                else if (startChar == ')' || startChar == ']' || startChar == '}') {
-
-                    int startIndex = 0;
-
-                    int endIndex = currentIndex;
-
-                    while (startIndex < endIndex) {
-
-                        //求余，余数相等的为false
-                        int start = startIndex % 2;
-
-                        int end = endIndex % 2;
-
-                        if (start == end) {
-                            startIndex++;
-                            continue;
-                        }
-
-                        char endChar = chars[startIndex];
-
-                        switch (startChar) {
-                            case ')':
-                                flag = endChar == '(';
-                                break;
-                            case ']':
-                                flag = endChar == '[';
-                                break;
-                            case '}':
-                                flag = endChar == '{';
-                                break;
-                        }
-
-                        //如果找到一个匹配的就跳出这次的循环
-                        if (flag) {
-                            currentIndex++;
-                            continue first;
-                        }
-                        //如果从前往后直到遇到自己都找不到，直接返回false，因为有一个找不到匹配就是不符合的
-                        else if (((length - 1) == startIndex) && flag == false) {
-                            break first;
-                        }
-                        //如果没匹配到就再往后找
-                        else {
-                            startIndex++;
-                        }
-                    }
+                char o = ' ';
+                while (index >= 0) {
+                    o = chars[index];
+                    if (o == ' ')
+                        index--;
+                    else
+                        break;
                 }
 
-                //如果匹配完都没有找到合适的，直接跳出
-                if ((length == currentIndex) && flag == false) {
-                    break;
+                //左边括号直接跳过
+                if (c == '(' || c == '[' || c == '{') {
+                    continue;
+                }
+                //右边括号，判断是否匹配
+                else if (c == ')' || c == ']' || c == '}') {
+                    if ((o == '(' && c == ')') ||
+                            (o == '[' && c == ']') ||
+                            (o == '{' && c == '}')
+                    ) {
+                        chars[index] = ' ';
+                        chars[i] = ' ';
+                    } else
+                        continue;
+                }
+            }
+            System.err.println("chars.toString().length() = " + chars.toString().length());
+            System.err.println("chars.toString() = " + Arrays.toString(chars));
+
+            for (char aChar : chars) {
+                if (aChar != ' ')
+                    return false;
+            }
+            return true;
+        }
+
+        /**
+         * 出入栈
+         * 把字符一个个推入栈内，当前字符若是与栈顶元素可以组成有效括号即出栈，最终栈为空即为有效
+         */
+        public boolean stackValid(String s) {
+
+            //null直接返回false
+            if (s == null || (s != "" && s.length() % 2 != 0))
+                return false;
+
+            //空字符串返回true
+            if (s == "")
+                return true;
+
+            if (!s.startsWith("(") && !s.startsWith("[") && !s.startsWith("{"))
+                return false;
+
+            char[] chars = s.toCharArray();
+
+            Stack stack = new Stack();
+
+            for (int i = 0; i < chars.length; i++) {
+
+                //当前字符
+                char c = chars[i];
+
+                if (stack.isEmpty()) {
+                    stack.push(c);
+                    continue;
                 }
 
-                //如果匹配完flag还是true，说明目前都是可以匹配到的，继续往下匹配
-                currentIndex++;
+                //栈顶元素
+                char o = (char) stack.lastElement();
+
+                //等于左边括号，直接入栈
+                if (c == '(' || c == '[' || c == '{') {
+                    stack.push(c);
+                }
+
+                //判断当前字符是否能与栈顶字符组成有效括号，若能，pop
+                else if (c == ')' || c == ']' || c == '}') {
+                    if ((o == '(' && c == ')') ||
+                            (o == '[' && c == ']') ||
+                            (o == '{' && c == '}')
+                    ) {
+                        stack.pop();
+                    } else
+                        stack.push(c);
+                }
             }
 
-            return flag;
+            return stack.isEmpty();
         }
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
