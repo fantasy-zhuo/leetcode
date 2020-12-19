@@ -145,7 +145,7 @@ public class P38CountAndSay {
 
                         countMap.remove(key);
                     }
-                    //如果不是连续的，
+                    //如果不是连续的，直接put
                     else {
 
                         countMap.put(keyPrefix + index, count);
