@@ -67,69 +67,286 @@
 
 package com.fantasy.code.leetcode.editor.cn;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import org.springframework.util.CollectionUtils;
+
+import java.util.*;
 
 //Java：外观数列
-public class P38CountAndSay{
+public class P38CountAndSay {
     public static void main(String[] args) {
         Solution solution = new P38CountAndSay().new Solution();
         // TO TEST
+        String s = solution.countAndSay(7);
 
-        System.out.println("Arrays.toString(\"abc\".split(\"\")) = " + Arrays.toString("abc".split("")));
-
-        String substring = "ab".substring(0, 1);
-
-        System.out.println("substring = " + substring);
+        System.out.println("s = " + s);
     }
+
     //leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public String countAndSay(int n) {
+    class Solution {
+        public String countAndSay(int n) {
 
-        String str = "1";
+            String str = "1";
 
-        if (n == 1)
-            return str;
+            if (n == 1)
+                return str;
 
-        int start = 2;
-
-        while (start <= n){
-
-            List<String> strings = new ArrayList<>();
-
-            String sameStr = "";
-
-            int s = 0;
-            int e = str.length()-1;
-
-            while (str.length() > 0){
-                String substring = str.substring(s, e);
-
-                if ("".equals(sameStr)){
-                    sameStr = substring;
-                    s++;
-                    continue;
-                }
-
-                if (substring.equals(sameStr)){
-                    sameStr += substring;
-                }else {
-                    strings.add(sameStr)
-                }
+            if (n == 2) {
+                str = "11";
+                return str;
             }
 
-            //切割前一个描述字符
-            str.split("");
+            if (n > 2) {
+                str = "11";
+            }
 
+            /**
+             * 从左到右，从第一个字符开始找，
+             * 找到不相同的后，记录下来，移动到下一位，继续找
+             * 找到相同的继续找，知道遇到不相同的，先记录，接着从不相同的找起
+             * 用list存储
+             */
+            String sperator = "-";
 
-            str = "";
+            String value = str;
+
+            for (int z = 2; z < n; z++) {
+
+                char[] chars = value.toCharArray();
+
+                int length = chars.length;
+
+                LinkedHashMap<String, Integer> countMap = new LinkedHashMap<>();
+
+                int index = 0;
+
+                while (index < length) {
+
+                    char c = chars[index];
+                    int count = 1;
+                    String keyPrefix = c + sperator;
+
+                    if (index == 0) {
+                        countMap.put(keyPrefix + index, count);
+                        index++;
+                        continue;
+                    }
+
+                    String key = keyPrefix + (index - 1);
+
+                    //如果是连续的，加1
+                    if (countMap.containsKey(key)) {
+                        Integer countValue = countMap.get(key);
+
+                        //数量
+
+                        countValue = countValue + 1;
+
+                        countMap.put(keyPrefix + index, countValue);
+
+                        countMap.remove(key);
+                    }
+                    //如果不是连续的，
+                    else {
+
+                        countMap.put(keyPrefix + index, count);
+                    }
+
+                    index++;
+                }
+
+                StringBuilder stringBuilder = new StringBuilder();
+
+                for (Map.Entry<String, Integer> stringIntegerEntry : countMap.entrySet()) {
+
+                    String key = stringIntegerEntry.getKey();
+
+                    String[] split = key.split(sperator);
+
+                    String s = split[0];
+
+                    Integer entryValue = stringIntegerEntry.getValue();
+
+                    stringBuilder.append(entryValue);
+                    stringBuilder.append(s);
+                }
+
+                value = stringBuilder.toString();
+
+                countMap = new LinkedHashMap<>();
+
+            }
+
+            return value;
+
         }
 
-        return str;
+        public String countList(int n) {
+            String str = "1";
 
+            if (n == 1)
+                return str;
+
+            if (n == 2) {
+                str = "11";
+                return str;
+            }
+
+            if (n > 2) {
+                str = "11";
+            }
+
+            /**
+             * 从左到右，从第一个字符开始找，
+             * 找到不相同的后，记录下来，移动到下一位，继续找
+             * 找到相同的继续找，知道遇到不相同的，先记录，接着从不相同的找起
+             * 用list存储
+             */
+
+            String value = str;
+
+            List<String> list = new ArrayList<>();
+
+            for (int z = 2; z < n; z++) {
+
+                char[] chars = value.toCharArray();
+
+                int length = chars.length;
+
+                int duplicateIndex = 0;
+
+                while (duplicateIndex < length) {
+                    int count = 1;
+
+                    char aChar = chars[duplicateIndex];
+
+                    int index = duplicateIndex + 1;
+
+                    while (index < length) {
+                        char c = chars[index];
+
+                        if (aChar == c) {
+                            count = count + 1;
+                            index++;
+                        } else {
+                            break;
+                        }
+                    }
+
+                    if (count == 1) {
+                        duplicateIndex++;
+                    } else {
+                        duplicateIndex = index;
+                    }
+
+                    list.add(count + "");
+                    list.add(aChar + "");
+                }
+
+                StringBuilder stringBuilder = new StringBuilder();
+
+                for (String s : list) {
+
+                    stringBuilder.append(s);
+                }
+
+                value = stringBuilder.toString();
+
+                list = new ArrayList<>();
+
+            }
+
+            return value;
+        }
+
+        public String countMap(int n) {
+            String str = "1";
+
+            if (n == 1)
+                return str;
+
+            if (n == 2) {
+                str = "11";
+                return str;
+            }
+
+            if (n > 2) {
+                str = "11";
+            }
+
+            /**
+             * 从左到右，从第一个字符开始找，
+             * 找到不相同的后，记录下来，移动到下一位，继续找
+             * 找到相同的继续找，知道遇到不相同的，先记录，接着从不相同的找起
+             * 用map存储，key为下表加字符值，value为数量
+             */
+
+            String value = str;
+
+            String sperator = "-";
+
+
+            for (int z = 2; z < n; z++) {
+
+                char[] chars = value.toCharArray();
+
+                int length = chars.length;
+
+                LinkedHashMap<String, Integer> countMap = new LinkedHashMap<>();
+
+                int duplicateIndex = 0;
+
+                while (duplicateIndex < length) {
+                    int count = 1;
+
+                    char aChar = chars[duplicateIndex];
+
+                    int index = duplicateIndex + 1;
+
+                    while (index < length) {
+                        char c = chars[index];
+
+                        if (aChar == c) {
+                            count = count + 1;
+                            index++;
+                        } else {
+                            break;
+                        }
+                    }
+
+                    if (count == 1) {
+                        duplicateIndex++;
+                    } else {
+                        duplicateIndex = index;
+                    }
+
+                    String key = aChar + sperator + duplicateIndex;
+
+                    countMap.put(key, count);
+                }
+
+                StringBuilder stringBuilder = new StringBuilder();
+
+                for (Map.Entry<String, Integer> stringIntegerEntry : countMap.entrySet()) {
+
+                    String key = stringIntegerEntry.getKey();
+
+                    String[] split = key.split(sperator);
+
+                    String s = split[0];
+
+                    Integer entryValue = stringIntegerEntry.getValue();
+
+                    stringBuilder.append(entryValue);
+                    stringBuilder.append(s);
+                }
+
+                value = stringBuilder.toString();
+
+            }
+
+            return value;
+        }
     }
-}
 //leetcode submit region end(Prohibit modification and deletion)
 
 }
