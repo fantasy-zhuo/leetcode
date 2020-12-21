@@ -34,19 +34,23 @@ public class P67AddBinary {
     public static void main(String[] args) {
         Solution solution = new P67AddBinary().new Solution();
         // TO TEST
-       int i = 13;
 
+//        System.out.println("binary = " + binary);
+
+        String test = solution.addBinary("1011", "11");
+
+        System.out.println("test = " + test);
 
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public String addBinary(String a, String b) {
-
             if (a == null || b == null
                     || a.length() == 0 || b.length() == 0
-                    || a.length() < 1 || b.length() > (10 << 4))
-                return null;
+                    || a.length() < 1 || b.length() > (10 << 4)
+                    || ("0".equals(a) && "0".equals(b)))
+                return "0";
 
             String regex = "^[01]+$";
 
@@ -55,41 +59,87 @@ public class P67AddBinary {
             if (!matches)
                 return null;
 
-            //计算a的值
-            char[] aList = a.toCharArray();
+            int aLength = a.length();
+            int bLength = b.length();
 
-            int aValue = 0;
+            boolean longer = aLength > bLength;
 
-            int aReverseIndex = 0;
+            int maxLength, minLength, sub;
+            char[] maxChars, minChars;
 
-            for (int i = aList.length; i > 0; i--) {
-                if (Integer.valueOf(aList[i] + "") == 1)
-                    aValue += 1 << aReverseIndex;
+            char[] aChars = a.toCharArray();
+            char[] bChars = b.toCharArray();
 
-                aReverseIndex++;
+            //如果a比b大
+            if (longer) {
+                maxLength = aLength;
+                minLength = bLength;
+                maxChars = aChars;
+                minChars = bChars;
+                sub = aLength - bLength;
+            } else {
+                maxLength = bLength;
+                minLength = aLength;
+                maxChars = bChars;
+                minChars = aChars;
+                sub = bLength - aLength;
             }
 
-            char[] bList = b.toCharArray();
-
-            int bValue = 0;
-
-            int bReverseIndex = 0;
-
-            for (int i = bList.length; i > 0; i--) {
-                if (Integer.valueOf(bList[i] + "") == 1)
-                    bValue += 1 << bReverseIndex;
-
-                bReverseIndex++;
+            String valueStr = "";
+            for (int i = 0; i < maxLength + 2; i++) {
+                valueStr += "0";
             }
 
-            int sum = aValue + bValue;
+            char[] value = valueStr.toCharArray();
 
-            while (sum > 0){
+            for (int i = maxLength - 1; i >= 0; i--) {
+                if (minLength == 0) {
+                    if (value[i + 2] == '1' && maxChars[i] == '1') {
+                        value[i + 1] = '1';
+                        value[i + 2] = '0';
+                    } else {
+                        if (value[i + 2] != '1')
+                            value[i + 2] = maxChars[i];
+                    }
+                    continue;
+                }
+                
+                Integer minValue = Integer.valueOf(minChars[i - sub > 0 ? i - sub : 0] + "");
+                Integer maxValue = Integer.valueOf(maxChars[i] + "");
+                int v = minValue ^ maxValue;
 
+                //异或结果 两者相同为0 ，不同为1
+                if (v == 0) {
+                    if (minValue == 1 && maxValue == 1) {
+                        if (value[i + 1] == '1') {
+                            value[i] = '1';
+                            value[i + 1] = '0';
+                        } else {
+                            value[i + 1] = '1';
+                            if (value[i + 2] != '1') value[i + 2] = '0';
+                        }
+                    }
+                } else {
+                    if (value[i + 2] == '1') {
+                        value[i + 1] = '1';
+                        value[i + 2] = '0';
+                    } else {
+                        value[i + 2] = '1';
+                    }
+                }
+                minLength--;
             }
 
-            return null;
+            String binary = String.valueOf(value);
+
+            while (binary.startsWith("0")) {
+                binary = binary.substring(1);
+            }
+
+            return binary;
+
         }
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
