@@ -29,7 +29,10 @@
 
 package com.fantasy.code.leetcode.editor.cn;
 
+import com.fantasy.code.leetcode.editor.cn.annotation.Resolved;
+
 //Java：二进制求和
+@Resolved
 public class P67AddBinary {
     public static void main(String[] args) {
         Solution solution = new P67AddBinary().new Solution();
