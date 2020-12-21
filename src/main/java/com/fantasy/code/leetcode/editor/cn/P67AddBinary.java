@@ -103,7 +103,7 @@ public class P67AddBinary {
                     }
                     continue;
                 }
-                
+
                 Integer minValue = Integer.valueOf(minChars[i - sub > 0 ? i - sub : 0] + "");
                 Integer maxValue = Integer.valueOf(maxChars[i] + "");
                 int v = minValue ^ maxValue;
