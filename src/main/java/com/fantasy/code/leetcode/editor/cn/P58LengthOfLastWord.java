@@ -17,8 +17,11 @@
 
 package com.fantasy.code.leetcode.editor.cn;
 
+import com.fantasy.code.leetcode.editor.cn.annotation.Resolved;
+
 import java.util.regex.Pattern;
 
+@Resolved
 //Java：最后一个单词的长度
 public class P58LengthOfLastWord {
     public static void main(String[] args) {

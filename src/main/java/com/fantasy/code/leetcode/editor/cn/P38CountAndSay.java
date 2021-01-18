@@ -67,6 +67,7 @@
 
 package com.fantasy.code.leetcode.editor.cn;
 
+import com.fantasy.code.leetcode.editor.cn.annotation.Resolved;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -74,6 +75,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 //Java：外观数列
+@Resolved
 public class P38CountAndSay {
     public static void main(String[] args) {
         Solution solution = new P38CountAndSay().new Solution();

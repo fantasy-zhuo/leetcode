@@ -1,7 +1,9 @@
 package com.fantasy.code.leetcode;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,7 +21,7 @@ public class Test {
 
         System.out.println("matches = " + matches);*/
 
-        String a = "111223333233";
+        /*String a = "111223333233";
 
         Pattern pattern = Pattern.compile("(.)\\1+|(.)");
 
@@ -43,6 +45,13 @@ public class Test {
 
         }
 
-        System.out.println("stringBuilder.toString() = " + stringBuilder.toString());
+        System.out.println("stringBuilder.toString() = " + stringBuilder.toString());*/
+        Set<String> set = new HashSet<>();
+        String s = "语文.数学";
+        for (String str : s.split(",")) {
+            set.add(str);
+        }
+
+        System.out.println(set.toString());
     }
 }
