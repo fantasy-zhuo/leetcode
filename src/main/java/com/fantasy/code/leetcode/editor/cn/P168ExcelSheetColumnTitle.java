@@ -1,4 +1,4 @@
-//给定一个正整数，返回它在 Excel 表中相对应的列名称。 
+//给定一个正整数，返回它在 Excel 表中相对应的列名称。
 //
 // 例如， 
 //
@@ -35,39 +35,18 @@
 
 package com.fantasy.code.leetcode.editor.cn;
 
+import com.fantasy.code.leetcode.editor.cn.annotation.Resolved;
+
 //Java：Excel表列名称
+@Resolved
 public class P168ExcelSheetColumnTitle {
     public static void main(String[] args) {
         Solution solution = new P168ExcelSheetColumnTitle().new Solution();
         // TO TEST
+        String s = solution.convertToTitle(702);
 
-        String result = "";
+        System.out.println("s = " + s);
 
-        int n = 701;
-
-        System.out.println("(char)(1+64) = " + (char) (2 + 64));
-
-        System.out.println("Math.pow(26,0) = " + Math.pow(26, 1));
-
-        String[] letters = new String[]{
-                "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
-        };
-
-        String s = "";
-        while (n > 0) {
-            int m = n % 26;
-            if (m == 0) {
-                //说明n = 26的倍数，那么这块就应该转换成Z
-                m = 26;
-            }
-            s = (char) (m + 64) + s;//大写A的ASCII码值为65,m[1,26]
-
-            n = (n - m) / 26;
-        }
-
-        result = s;
-
-        System.out.println("result = " + result);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
@@ -78,15 +57,30 @@ public class P168ExcelSheetColumnTitle {
                     "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
             };
 
-
-            int num = 0;//位数
-
-            while (n / 26 > 26) {
-                num++;
-                n = n / 26;
+            if (n <= 0) {
+                return null;
             }
 
-            return null;
+            if (n <= 26 && n > 0) {
+                return letters[n - 1];
+            }
+
+            StringBuilder builder = new StringBuilder();
+
+            /*
+                这里是从后往前推，先求余得出最后一位,把余数减去之后除以26，接着重复第一步直到n <= 0
+             */
+            while (n > 0) {
+
+                int m = n % 26;
+                if (m == 0) {
+                    m = 26;
+                }
+                builder.append(letters[m-1]);
+                n = (n - m) / 26;
+            }
+
+            return builder.reverse().toString();
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
