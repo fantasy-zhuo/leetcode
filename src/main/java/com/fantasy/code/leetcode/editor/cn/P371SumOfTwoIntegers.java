@@ -16,7 +16,10 @@
 
 package com.fantasy.code.leetcode.editor.cn;
 
+import com.fantasy.code.leetcode.editor.cn.annotation.Resolved;
+
 //Java：两整数之和
+@Resolved
 public class P371SumOfTwoIntegers {
     public static void main(String[] args) {
 
@@ -31,14 +34,10 @@ public class P371SumOfTwoIntegers {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int getSum(int a, int b) {
-            int result = a^b;
-            //判断是否需要进位
-            int forward = (a&b) <<1;
-            if(forward!=0){
-                //如有进位，则将二进制数左移一位，进行递归
-                return getSum(result,forward);
-            }
-            return result;
+            // write your code here
+            if ((a & b) == 0)
+                return a|b;
+            return getSum(a^b,(a&b)<<1);
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
