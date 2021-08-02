@@ -37,10 +37,7 @@ package com.fantasy.code.leetcode.editor.cn;
 
 import com.fantasy.code.leetcode.editor.cn.annotation.Resolved;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 //Java：两个数组的交集 II
 @Resolved
@@ -49,8 +46,8 @@ public class P350IntersectionOfTwoArraysIi {
         Solution solution = new P350IntersectionOfTwoArraysIi().new Solution();
         // TO TEST
 
-        int[] nums1 = new int[]{4,9,5};
-        int[] nums2 = new int[]{9,4,9,8,4};
+        int[] nums1 = new int[]{1,2,2,1};
+        int[] nums2 = new int[]{2,2};
 
         System.out.println(Arrays.toString(solution.intersect(nums1, nums2)));
     }
@@ -71,6 +68,7 @@ public class P350IntersectionOfTwoArraysIi {
             }
 
             Map<Integer, Integer> resultMap = new HashMap<>();
+            List<Integer> list = new ArrayList<>();
 
             for (int i : nums2) {
                 if (source.containsKey(i)) {
@@ -80,9 +78,12 @@ public class P350IntersectionOfTwoArraysIi {
                         Integer integer1 = resultMap.get(i);
                         if (integer1 < integer) {
                             times = integer1+1;
+                            list.add(i);
                         } else {
                             times = integer;
                         }
+                    }else {
+                        list.add(i);
                     }
                     resultMap.put(i, times);
 
@@ -91,28 +92,11 @@ public class P350IntersectionOfTwoArraysIi {
             }
 
             int index = 0;
-            int size = 0;
+            int[] result = new int[list.size()];
 
-            for (Map.Entry<Integer, Integer> entry : resultMap.entrySet()) {
-                Map.Entry<Integer, Integer> next = entry;
-                Integer value = next.getValue();
-                size += value;
+            for (Integer integer : list) {
+                result[index++] = integer;
             }
-
-            int[] result = new int[size];
-
-            Iterator<Map.Entry<Integer, Integer>> iterator = resultMap.entrySet().iterator();
-
-
-            while (iterator.hasNext()) {
-                Map.Entry<Integer, Integer> next = iterator.next();
-                Integer key = next.getKey();
-                Integer value = next.getValue();
-                for (Integer i = 0; i < value; i++) {
-                    result[index++] = key;
-                }
-            }
-
             return result;
         }
     }
