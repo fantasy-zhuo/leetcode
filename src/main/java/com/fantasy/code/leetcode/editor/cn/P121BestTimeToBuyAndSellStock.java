@@ -37,7 +37,10 @@
 
 package com.fantasy.code.leetcode.editor.cn;
 
+import com.fantasy.code.leetcode.editor.cn.annotation.Resolved;
+
 //Java：买卖股票的最佳时机
+@Resolved
 public class P121BestTimeToBuyAndSellStock {
     public static void main(String[] args) {
         Solution solution = new P121BestTimeToBuyAndSellStock().new Solution();
