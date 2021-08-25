@@ -72,10 +72,13 @@
 
 package com.fantasy.code.leetcode.editor.cn;
 
+import com.fantasy.code.leetcode.editor.cn.annotation.Resolved;
+
 import java.util.ArrayList;
 import java.util.List;
 
 //Java：汇总区间
+@Resolved
 public class P228SummaryRanges {
     public static void main(String[] args) {
         Solution solution = new P228SummaryRanges().new Solution();
@@ -90,41 +93,51 @@ public class P228SummaryRanges {
     class Solution {
         public List<String> summaryRanges(int[] nums) {
 
-            List<String> resultResult = new ArrayList<>();
+            List<String> result = new ArrayList<>();
 
             Integer startNum = null;
             Integer endNum = null;
             Integer prevNum = null;
+            StringBuilder builder = new StringBuilder();
+            String section = null;
 
             for (int i = 0; i < nums.length; i++) {
 
                 int num = nums[i];
 
+                //第一次，记录区间开始值
                 if (null == startNum) {
                     startNum = num;
                 }
+
+                //连续，记录区间结尾值
                 else if (num == prevNum + 1){
                     endNum = num;
                 }
 
                 //不连续，形成区间
                 else if (num > prevNum + 1) {
-                    String section = null == endNum ? startNum+"" : startNum + "->" + endNum;
-                    resultResult.add(section);
+                    builder = new StringBuilder();
+                    section = null == endNum ? builder.append(startNum).toString(): builder.append(startNum).append("->").append(endNum).toString();
+                    result.add(section);
                     startNum = num;
                     endNum = null;
                 }
 
+                //记录当前值为前一个值
                 prevNum = num;
 
+                //最后一个值，不管有没有区间都放到列表里
                 if (i == nums.length-1){
-                    String section = null == endNum ? startNum+"" : startNum + "->" + endNum;
-                    resultResult.add(section);
+                    builder = new StringBuilder();
+                    section = null == endNum ? builder.append(startNum).toString() : builder.append(startNum).append("->").append(endNum).toString();
+                    result.add(section);
                 }
             }
 
-            return resultResult;
+            return result;
         }
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
