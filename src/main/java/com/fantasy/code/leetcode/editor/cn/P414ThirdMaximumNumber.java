@@ -72,26 +72,33 @@ public class P414ThirdMaximumNumber {
 
                 //第一次进来，如果比第三大，再往下走
                 if (num > third) {
+
                     //如果比第二大，再往下走
                     if (num > second) {
+
                         //如果比第一大，给第一赋值，同时第一二的值往后推
                         if (num > first) {
                             third = second;
                             second = first;
                             first = num;
                         }
+
                         //如果只比第二大，给第二赋值，同时第二的值往后推
                         else {
+
                             //前提是第二的值不等于第一的值
                             if (first != num) {
+
                                 //第三的值也不能等于第二的值
                                 if (second != num) {
                                     third = second;
                                 }
+
                                 second = num;
                             }
                         }
                     }
+
                     //如果只比第三大，给第三赋值，但不能等于第二
                     else {
                         if (second != num) {
@@ -99,6 +106,7 @@ public class P414ThirdMaximumNumber {
                         }
                     }
                 }
+
                 //数组中有最小值
                 else {
                     isMinValue = num == Integer.MIN_VALUE;
