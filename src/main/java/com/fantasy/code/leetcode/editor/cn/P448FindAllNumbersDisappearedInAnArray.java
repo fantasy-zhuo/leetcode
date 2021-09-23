@@ -55,23 +55,27 @@ public class P448FindAllNumbersDisappearedInAnArray {
     class Solution {
         public List<Integer> findDisappearedNumbers(int[] nums) {
 
+            return simple(nums);
+        }
+
+        public List<Integer> simple(int[] nums) {
+
             int length = nums.length;
 
-        Map<Integer ,Integer> map = new HashMap<>();
+            Map<Integer, Integer> map = new HashMap<>();
 
-        for (int i = 0; i < length; i++) {
-            map.put(nums[i] , 0);
-
-        }
-
-        List<Integer> list = new ArrayList<>();
-
-        for (int i = 1; i <= length; i++) {
-
-            if (!map.containsKey(i)){
-                list.add(i);
+            for (int i = 0; i < length; i++) {
+                map.put(nums[i], 0);
             }
-        }
+
+            List<Integer> list = new ArrayList<>();
+
+            for (int i = 1; i <= length; i++) {
+
+                if (!map.containsKey(i)) {
+                    list.add(i);
+                }
+            }
             return list;
         }
     }
